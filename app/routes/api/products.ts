@@ -4,8 +4,14 @@ const DEFAULT_LIMIT = 12;
 
 export async function loader({ request, context }: { request: Request; context: Record<string, unknown> }) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
   const url = new URL(request.url);
+
+  let db;
+  try {
+    db = await getDb(env);
+  } catch (err) {
+    return new Response(JSON.stringify({ error: 'Database unavailable', data: [], meta: { total: 0, page: 1, limit: DEFAULT_LIMIT, total_pages: 0 }, filters: { brands: [], price_range: { min: 0, max: 0 } } }), { status: 503, headers: { 'content-type': 'application/json' } });
+  }
 
   const q = url.searchParams.get('q') ?? '';
   const category = url.searchParams.get('category') ?? '';
@@ -39,26 +45,24 @@ export async function loader({ request, context }: { request: Request; context: 
   const skip = (page - 1) * limit;
 
   const collection = db.collection('products');
-  const [docs, total] = await Promise.all([
+
+  // Run all four DB operations in parallel — avoids 4× round-trip latency
+  const [docs, total, brandsAgg, priceAgg] = await Promise.all([
     collection.find(filter).sort(sortDoc).skip(skip).limit(limit).toArray(),
     collection.countDocuments(filter),
+    collection.aggregate([
+      { $match: { active: true } },
+      { $group: { _id: '$brand.slug', name: { $first: '$brand.name' }, count: { $sum: 1 } } },
+      { $project: { slug: '$_id', name: 1, count: 1, _id: 0 } },
+      { $sort: { name: 1 } },
+    ]).toArray(),
+    collection.aggregate([
+      { $match: { active: true } },
+      { $group: { _id: null, min: { $min: '$price.aed' }, max: { $max: '$price.aed' } } },
+    ]).toArray(),
   ]);
 
-  // Aggregation for brands facet
-  const brandsAgg = await collection.aggregate([
-    { $match: { active: true } },
-    { $group: { _id: '$brand.slug', name: { $first: '$brand.name' }, count: { $sum: 1 } } },
-    { $project: { slug: '$_id', name: 1, count: 1, _id: 0 } },
-    { $sort: { name: 1 } },
-  ]).toArray();
-
-  // Price range facet
-  const priceAgg = await collection.aggregate([
-    { $match: { active: true } },
-    { $group: { _id: null, min: { $min: '$price.aed' }, max: { $max: '$price.aed' } } },
-  ]).toArray();
-
-  const priceRange = priceAgg[0] ?? { min: 0, max: 0 };
+  const priceRange = (priceAgg as Array<{ min: number; max: number }>)[0] ?? { min: 0, max: 0 };
 
   return new Response(
     JSON.stringify({

@@ -47,7 +47,16 @@ function buildTree(docs: CategoryDoc[]): CategoryNode[] {
 
 export async function loader({ context }: { request: Request; context: Record<string, unknown> }) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
+
+  let db;
+  try {
+    db = await getDb(env);
+  } catch {
+    return new Response(JSON.stringify({ error: 'Database unavailable' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   const docs = await db
     .collection<CategoryDoc>('categories')

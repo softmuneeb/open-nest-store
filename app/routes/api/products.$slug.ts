@@ -9,7 +9,15 @@ export async function loader({
   context: Record<string, unknown>;
 }) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
+  let db;
+  try {
+    db = await getDb(env);
+  } catch {
+    return new Response(JSON.stringify({ error: 'Database unavailable' }), {
+      status: 503,
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   const { slug } = params;
 
   const product = await db.collection('products').findOne({ slug, active: true });

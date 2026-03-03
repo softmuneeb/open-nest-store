@@ -11,8 +11,14 @@ export function meta({ params }: Route.MetaArgs) {
 
 export async function loader({ params, context }: Route.LoaderArgs) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
   const { slug } = params;
+
+  let db;
+  try {
+    db = await getDb(env);
+  } catch (err) {
+    throw new Response('Database unavailable', { status: 503 });
+  }
 
   const product = await db.collection<ProductDocument>('products').findOne({ slug, active: true });
   if (!product) {

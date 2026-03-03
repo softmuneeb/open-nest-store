@@ -2,54 +2,49 @@ import type { Route } from './+types/search';
 import { getDb } from '~/lib/db/mongodb';
 import type { ProductDocument } from '~/types';
 
-export function meta({ request }: Route.MetaArgs) {
-  const url = new URL(request.url);
-  const q = url.searchParams.get('q') || '';
+export function meta({ data }: Route.MetaArgs) {
+  const q = (data as { query?: string } | null)?.query ?? '';
   return [
-    { title: `Search Results for "${q}" | Open Nest` },
-    { name: 'description', content: `Search results for ${q}` },
+    { title: q ? `Search Results for "${q}" | Open Nest` : 'Search | Open Nest' },
+    { name: 'description', content: q ? `Search results for ${q}` : 'Search products at Open Nest' },
   ];
 }
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
-
   const url = new URL(request.url);
   const query = url.searchParams.get('q') || '';
   const page = parseInt(url.searchParams.get('page') || '1');
   const limit = 12;
   const skip = (page - 1) * limit;
 
-  // Text search
+  let db;
+  try {
+    db = await getDb(env);
+  } catch {
+    return { query, products: [], total: 0, page, totalPages: 0, dbError: true };
+  }
+
   const filter: Record<string, unknown> = { active: true };
   let products: ProductDocument[] = [];
   let total = 0;
 
   if (query.trim().length >= 2) {
-    // Search using text index
+    const textFilter = { ...filter, $text: { $search: query } };
     try {
-      products = await db
-        .collection<ProductDocument>('products')
-        .find({ ...filter, $text: { $search: query } })
-        .skip(skip)
-        .limit(limit)
-        .toArray();
-
-      total = await db.collection<ProductDocument>('products').countDocuments({ ...filter, $text: { $search: query } });
+      // Parallel text-index query + count
+      [products, total] = await Promise.all([
+        db.collection<ProductDocument>('products').find(textFilter).skip(skip).limit(limit).toArray(),
+        db.collection<ProductDocument>('products').countDocuments(textFilter),
+      ]);
     } catch {
-      // Fallback to regex search if text index not available
-      const regex = new RegExp(query, 'i');
-      products = await db
-        .collection<ProductDocument>('products')
-        .find({ ...filter, $or: [{ name: regex }, { description: regex }, { sku: regex }] })
-        .skip(skip)
-        .limit(limit)
-        .toArray();
-
-      total = await db
-        .collection<ProductDocument>('products')
-        .countDocuments({ ...filter, $or: [{ name: regex }, { description: regex }, { sku: regex }] });
+      // Text index unavailable — fall back to regex, also in parallel
+      const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+      const regexFilter = { ...filter, $or: [{ name: regex }, { description: regex }, { sku: regex }] };
+      [products, total] = await Promise.all([
+        db.collection<ProductDocument>('products').find(regexFilter).skip(skip).limit(limit).toArray(),
+        db.collection<ProductDocument>('products').countDocuments(regexFilter),
+      ]);
     }
   }
 

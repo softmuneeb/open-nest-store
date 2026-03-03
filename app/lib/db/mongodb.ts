@@ -13,10 +13,18 @@ let cachedClient: MongoClient | null = null;
 let cachedUri: string | null = null;
 
 export async function getMongoClient(env: Env): Promise<MongoClient> {
+  if (!env?.MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is not set. Add it to .dev.vars for local development.');
+  }
   if (cachedClient && cachedUri === env.MONGODB_URI) {
     return cachedClient;
   }
-  const client = new MongoClient(env.MONGODB_URI);
+  // Fail fast instead of hanging the Worker for 30 s when Atlas is unreachable.
+  const client = new MongoClient(env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 8_000,
+    connectTimeoutMS: 8_000,
+    socketTimeoutMS: 10_000,
+  });
   await client.connect();
   cachedClient = client;
   cachedUri = env.MONGODB_URI;

@@ -15,17 +15,22 @@ export function meta({ params }: Route.MetaArgs) {
 
 export async function loader({ params, request, context }: Route.LoaderArgs) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
   const { slug } = params;
 
-  // Get category by slug
+  let db;
+  try {
+    db = await getDb(env);
+  } catch (err) {
+    throw new Response('Database unavailable', { status: 503 });
+  }
+
+  const url = new URL(request.url);
   const category = await db.collection<CategoryDocument>('categories').findOne({ slug, active: true });
   if (!category) {
     throw new Response('Category not found', { status: 404 });
   }
 
   // Get query params for filtering
-  const url = new URL(request.url);
   const minPrice = parseFloat(url.searchParams.get('min_price') || '0');
   const maxPrice = parseFloat(url.searchParams.get('max_price') || '999999');
   const brand = url.searchParams.get('brand');
@@ -41,7 +46,7 @@ export async function loader({ params, request, context }: Route.LoaderArgs) {
   };
 
   if (brand) {
-    filter.brand = brand;
+    filter['brand.slug'] = brand;
   }
 
   // Get products

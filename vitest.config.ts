@@ -6,15 +6,27 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
+  // Use automatic JSX runtime (React 17+) so test files don't need `import React`
+  esbuild: {
+    jsx: 'automatic',
+    jsxImportSource: 'react',
+  },
   resolve: {
     alias: [
       { find: /^~\//, replacement: path.resolve(__dirname, 'app') + '/' },
     ],
   },
   test: {
-    // Unit and integration tests run in happy-dom (browser-like)
+    // Component unit tests run in happy-dom (browser-like DOM APIs needed)
+    // Integration tests run in node to allow full HTTP header access (cookie, set-cookie)
     environment: 'happy-dom',
+    environmentMatchGlobs: [
+      ['tests/integration/**', 'node'],
+    ],
     globals: true,
+
+    // Run test files sequentially to prevent data-race on shared in-memory MongoDB
+    fileParallelism: false,
 
     // Global setup/teardown
     globalSetup: ['./tests/setup/global-setup.ts'],

@@ -40,37 +40,62 @@ export async function loader({ request, context }: { request: Request; context: 
   }
   if (inStock) filter['stock.status'] = 'in_stock';
 
-  const db = await getDb(env);
+  let db;
+  try {
+    db = await getDb(env);
+  } catch (err) {
+    return new Response(JSON.stringify({ error: 'Database unavailable', results: [] }), { status: 503, headers: { 'content-type': 'application/json' } });
+  }
   const collection = db.collection('products');
 
   if (autocomplete) {
     // Lightweight autocomplete: only name + slug + price + thumbnail
     const projection = { name: 1, slug: 1, price: 1, images: { $slice: 1 }, score: { $meta: 'textScore' } };
-    const suggestions = await collection
-      .find(filter, { projection })
-      .sort({ score: { $meta: 'textScore' } })
-      .limit(5)
-      .toArray();
-
-    return new Response(JSON.stringify({ suggestions }), {
-      status: 200,
-      headers: { 'content-type': 'application/json' },
-    });
+    try {
+      const suggestions = await collection
+        .find(filter, { projection })
+        .sort({ score: { $meta: 'textScore' } })
+        .limit(5)
+        .toArray();
+      return new Response(JSON.stringify({ suggestions }), { status: 200, headers: { 'content-type': 'application/json' } });
+    } catch {
+      // Text index may not exist — fall back to regex autocomplete
+      const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+      const suggestions = await collection
+        .find({ active: true, $or: [{ name: regex }, { sku: regex }] }, { projection: { name: 1, slug: 1, price: 1, images: { $slice: 1 } } })
+        .limit(5)
+        .toArray();
+      return new Response(JSON.stringify({ suggestions }), { status: 200, headers: { 'content-type': 'application/json' } });
+    }
   }
 
   const limit = parseInt(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT), 10);
   const page = parseInt(url.searchParams.get('page') ?? '1', 10);
   const skip = (page - 1) * limit;
 
-  const [results, total] = await Promise.all([
-    collection
-      .find(filter, { projection: { score: { $meta: 'textScore' } } })
-      .sort({ score: { $meta: 'textScore' } })
-      .skip(skip)
-      .limit(limit)
-      .toArray(),
-    collection.countDocuments(filter),
-  ]);
+  let results: unknown[];
+  let total: number;
+
+  try {
+    // Try text-index search (fast, relevance-ranked)
+    ;[results, total] = await Promise.all([
+      collection
+        .find(filter, { projection: { score: { $meta: 'textScore' } } })
+        .sort({ score: { $meta: 'textScore' } })
+        .skip(skip)
+        .limit(limit)
+        .toArray(),
+      collection.countDocuments(filter),
+    ]);
+  } catch {
+    // Text index not available — fall back to regex across name/sku/description
+    const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    const regexFilter = { active: true, $or: [{ name: regex }, { sku: regex }, { description: regex }] } as Record<string, unknown>;
+    ;[results, total] = await Promise.all([
+      collection.find(regexFilter).skip(skip).limit(limit).toArray(),
+      collection.countDocuments(regexFilter),
+    ]);
+  }
 
   return new Response(
     JSON.stringify({
