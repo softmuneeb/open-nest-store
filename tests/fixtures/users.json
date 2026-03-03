@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "user_001",
+    "email": "alice@example.com",
+    "test_password": "Password@123",
+    "password_hash": "WILL_BE_HASHED_AT_SEED_TIME",
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "phone": "+971501234567",
+    "is_b2b": false,
+    "company_name": null,
+    "trade_licence": null,
+    "credit_terms": null,
+    "email_verified": true,
+    "active": true,
+    "created_at": "2025-01-15T10:00:00.000Z"
+  },
+  {
+    "_id": "user_002",
+    "email": "bob.tech@company.ae",
+    "test_password": "Password@456",
+    "password_hash": "WILL_BE_HASHED_AT_SEED_TIME",
+    "first_name": "Bob",
+    "last_name": "Johnson",
+    "phone": "+971509876543",
+    "is_b2b": true,
+    "company_name": "Tech Solutions LLC",
+    "trade_licence": "TL-12345-DXB",
+    "credit_terms": "net30",
+    "email_verified": true,
+    "active": true,
+    "created_at": "2025-02-10T08:00:00.000Z"
+  },
+  {
+    "_id": "user_003",
+    "email": "unverified@example.com",
+    "test_password": "Password@789",
+    "password_hash": "WILL_BE_HASHED_AT_SEED_TIME",
+    "first_name": "Charlie",
+    "last_name": "Brown",
+    "phone": null,
+    "is_b2b": false,
+    "company_name": null,
+    "trade_licence": null,
+    "credit_terms": null,
+    "email_verified": false,
+    "active": true,
+    "created_at": "2026-02-28T12:00:00.000Z"
+  }
+]

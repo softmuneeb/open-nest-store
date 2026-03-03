@@ -1,0 +1,170 @@
+[
+  {
+    "_id": "prod_001",
+    "sku": "CPU-INTEL-I9-14900K",
+    "name": "Intel Core i9-14900K Desktop Processor",
+    "slug": "intel-core-i9-14900k-desktop-processor",
+    "brand": { "id": "brand_intel", "name": "Intel", "slug": "intel" },
+    "category": {
+      "id": "cat_002",
+      "name": "CPUs / Processors",
+      "slug": "processors",
+      "path": "Computer Components > CPUs / Processors"
+    },
+    "price": { "aed": 2199.00, "compare_aed": 2499.00 },
+    "stock": { "qty": 15, "status": "in_stock" },
+    "images": [
+      { "url": "/images/products/i9-14900k-1.webp", "alt": "Intel Core i9-14900K", "is_primary": true, "sort_order": 0 },
+      { "url": "/images/products/i9-14900k-2.webp", "alt": "Intel Core i9-14900K box", "is_primary": false, "sort_order": 1 }
+    ],
+    "description": "<p>The Intel Core i9-14900K delivers exceptional performance for gaming and content creation.</p>",
+    "short_description": "24-core (8P+16E) desktop processor, 6.0GHz max boost, LGA1700 socket.",
+    "attributes": {
+      "Socket": "LGA1700",
+      "Cores": "24 (8P + 16E)",
+      "Base Clock": "3.2 GHz",
+      "Max Boost Clock": "6.0 GHz",
+      "TDP": "125W",
+      "Cache": "36MB L3"
+    },
+    "price_tiers": [],
+    "meta": {
+      "title": "Intel Core i9-14900K Desktop Processor UAE | Open Nest",
+      "description": "Buy Intel Core i9-14900K in UAE. Best price, fast delivery.",
+      "keywords": "Intel i9-14900K, BX8071514900K, desktop processor, LGA1700"
+    },
+    "google_product_category": "Electronics > Electronics Accessories > Computer Components > Computer Processors",
+    "weight": 0.34,
+    "dimensions": { "l": 50, "w": 50, "h": 10 },
+    "active": true,
+    "featured": true,
+    "created_at": "2024-09-01T00:00:00.000Z",
+    "updated_at": "2026-03-01T00:00:00.000Z"
+  },
+  {
+    "_id": "prod_002",
+    "sku": "CPU-AMD-RYZEN9-7950X",
+    "name": "AMD Ryzen 9 7950X Desktop Processor",
+    "slug": "amd-ryzen-9-7950x-desktop-processor",
+    "brand": { "id": "brand_amd", "name": "AMD", "slug": "amd" },
+    "category": {
+      "id": "cat_002",
+      "name": "CPUs / Processors",
+      "slug": "processors",
+      "path": "Computer Components > CPUs / Processors"
+    },
+    "price": { "aed": 3299.00 },
+    "stock": { "qty": 0, "status": "out_of_stock" },
+    "images": [
+      { "url": "/images/products/ryzen9-7950x.webp", "alt": "AMD Ryzen 9 7950X", "is_primary": true, "sort_order": 0 }
+    ],
+    "description": "<p>The AMD Ryzen 9 7950X is a powerhouse for workstations and heavy multitasking.</p>",
+    "short_description": "16-core 32-thread processor, 5.7GHz max boost, AM5 socket.",
+    "attributes": {
+      "Socket": "AM5",
+      "Cores": "16",
+      "Threads": "32",
+      "Base Clock": "4.5 GHz",
+      "Max Boost Clock": "5.7 GHz",
+      "TDP": "170W",
+      "Cache": "64MB L3"
+    },
+    "price_tiers": [
+      { "min_qty": 10, "max_qty": 49, "price_aed": 3099.00 },
+      { "min_qty": 50, "price_aed": 2899.00 }
+    ],
+    "meta": {
+      "title": "AMD Ryzen 9 7950X Desktop Processor UAE | Open Nest",
+      "description": "Buy AMD Ryzen 9 7950X in UAE at Open Nest. Best workstation CPU.",
+      "keywords": "AMD Ryzen 9, 7950X, workstation processor"
+    },
+    "google_product_category": "Electronics > Electronics Accessories > Computer Components > Computer Processors",
+    "weight": 0.33,
+    "dimensions": { "l": 40, "w": 40, "h": 10 },
+    "active": true,
+    "featured": false,
+    "created_at": "2024-09-01T00:00:00.000Z",
+    "updated_at": "2026-03-01T00:00:00.000Z"
+  },
+  {
+    "_id": "prod_003",
+    "sku": "MB-ASUS-Z790-HERO",
+    "name": "ASUS ROG Maximus Z790 Hero Motherboard",
+    "slug": "asus-rog-maximus-z790-hero-motherboard",
+    "brand": { "id": "brand_asus", "name": "ASUS", "slug": "asus" },
+    "category": {
+      "id": "cat_003",
+      "name": "Motherboards",
+      "slug": "motherboards",
+      "path": "Computer Components > Motherboards"
+    },
+    "price": { "aed": 4599.00 },
+    "stock": { "qty": 8, "status": "in_stock" },
+    "images": [
+      { "url": "/images/products/asus-z790-hero.webp", "alt": "ASUS ROG Maximus Z790 Hero", "is_primary": true, "sort_order": 0 }
+    ],
+    "description": "<p>Premium Z790 motherboard for Intel 12th/13th/14th generation processors.</p>",
+    "short_description": "ATX motherboard, LGA1700, DDR5, PCIe 5.0, Thunderbolt 4.",
+    "attributes": {
+      "Form Factor": "ATX",
+      "Socket": "LGA1700",
+      "Memory Type": "DDR5",
+      "Memory Slots": "4",
+      "Max Memory": "192GB",
+      "PCIe Version": "5.0"
+    },
+    "price_tiers": [],
+    "meta": {
+      "title": "ASUS ROG Maximus Z790 Hero Motherboard UAE | Open Nest",
+      "description": "Buy ASUS ROG Z790 Hero in UAE. Premium gaming motherboard with DDR5 and PCIe 5.0.",
+      "keywords": "ASUS ROG, Z790, motherboard, LGA1700"
+    },
+    "google_product_category": "Electronics > Electronics Accessories > Computer Components > Computer Motherboards",
+    "weight": 1.5,
+    "dimensions": { "l": 305, "w": 244, "h": 30 },
+    "active": true,
+    "featured": true,
+    "created_at": "2024-10-01T00:00:00.000Z",
+    "updated_at": "2026-03-01T00:00:00.000Z"
+  },
+  {
+    "_id": "prod_004",
+    "sku": "RAM-GSKILL-TZ5-32GB",
+    "name": "G.Skill Trident Z5 32GB DDR5-6000 Kit",
+    "slug": "gskill-trident-z5-32gb-ddr5-6000",
+    "brand": { "id": "brand_gskill", "name": "G.Skill", "slug": "gskill" },
+    "category": {
+      "id": "cat_004",
+      "name": "RAM / Memory",
+      "slug": "memory",
+      "path": "Computer Components > RAM / Memory"
+    },
+    "price": { "aed": 649.00 },
+    "stock": { "qty": 25, "status": "in_stock" },
+    "images": [
+      { "url": "/images/products/gskill-tz5.webp", "alt": "G.Skill Trident Z5 DDR5", "is_primary": true, "sort_order": 0 }
+    ],
+    "description": "<p>High-performance DDR5 memory kit with RGB lighting.</p>",
+    "short_description": "2x16GB DDR5-6000 CL30, RGB, Intel XMP 3.0 support.",
+    "attributes": {
+      "Type": "DDR5",
+      "Capacity": "32GB (2x16GB)",
+      "Speed": "6000 MHz",
+      "Latency": "CL30",
+      "Voltage": "1.35V"
+    },
+    "price_tiers": [],
+    "meta": {
+      "title": "G.Skill Trident Z5 32GB DDR5 UAE | Open Nest",
+      "description": "Buy G.Skill Trident Z5 DDR5 6000MHz 32GB in UAE. Fast delivery.",
+      "keywords": "DDR5, RAM, G.Skill, Trident Z5"
+    },
+    "google_product_category": "Electronics > Electronics Accessories > Computer Components > Computer Memory",
+    "weight": 0.2,
+    "dimensions": { "l": 130, "w": 10, "h": 50 },
+    "active": true,
+    "featured": false,
+    "created_at": "2024-11-01T00:00:00.000Z",
+    "updated_at": "2026-03-01T00:00:00.000Z"
+  }
+]

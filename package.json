@@ -1,6 +1,6 @@
 {
 	"name": "open-nest-store",
-	"description": "Build a full-stack web application with React Router 7.",
+	"description": "Open Nest \u2014 Technology. Delivered. Built on React Router 7 + Cloudflare Workers + MongoDB Atlas.",
 	"cloudflare": {
 		"label": "React Router Framework Starter",
 		"products": [
@@ -14,22 +14,35 @@
 		"publish": true
 	},
 	"dependencies": {
+		"bcryptjs": "^2.4.3",
 		"isbot": "5.1.32",
+		"jose": "^5.9.6",
+		"mongodb": "^6.10.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-router": "7.9.6"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.10.0",
 		"@cloudflare/vite-plugin": "1.15.3",
+		"@playwright/test": "^1.50.0",
 		"@react-router/dev": "7.9.6",
 		"@tailwindcss/vite": "4.1.17",
+		"@testing-library/jest-dom": "^6.6.0",
+		"@testing-library/react": "^16.1.0",
+		"@testing-library/user-event": "^14.5.0",
+		"@types/bcryptjs": "^2.4.6",
 		"@types/node": "24.10.1",
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
+		"@vitest/coverage-v8": "^2.1.0",
+		"happy-dom": "^15.7.0",
+		"mongodb-memory-server": "^10.1.0",
 		"tailwindcss": "4.1.17",
 		"typescript": "5.9.3",
 		"vite": "^6.0.0",
 		"vite-tsconfig-paths": "5.1.4",
+		"vitest": "^2.1.0",
 		"wrangler": "4.56.0"
 	},
 	"private": true,
@@ -39,8 +52,20 @@
 		"check": "tsc && react-router build && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
 		"dev": "react-router dev",
+		"lint": "tsc --noEmit",
 		"preview": "npm run build && vite preview",
-		"typecheck": "npm run typegen && tsc -b"
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"test:unit": "vitest run tests/unit",
+		"test:integration": "vitest run tests/integration",
+		"test:e2e": "playwright test",
+		"test:e2e:ui": "playwright test --ui",
+		"test:e2e:headed": "playwright test --headed",
+		"test:e2e:debug": "playwright test --debug",
+		"test:all": "vitest run && playwright test",
+		"typecheck": "npm run typegen && tsc -b",
+		"typegen": "wrangler types && react-router typegen"
 	},
 	"type": "module"
 }
