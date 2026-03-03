@@ -48,7 +48,15 @@ export async function action({ request, context }: { request: Request; context: 
     });
   }
 
-  const db = await getDb(env);
+  let db;
+  try {
+    db = await getDb(env);
+  } catch {
+    return new Response(JSON.stringify({ error: 'Database unavailable' }), {
+      status: 503,
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   const existing = await db.collection('users').findOne({ email: body.email });
   if (existing) {
     return new Response(

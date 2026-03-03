@@ -52,68 +52,74 @@ export function ProductCard({ product, currency, rates, onAddToCart, onWishlist 
     : null;
 
   return (
-    <article>
-      <a href={`/products/${product.slug}`} aria-label={product.name}>
+    <article className="flex flex-col h-full">
+      <a href={`/products/${product.slug}`} aria-label={product.name} className="flex-shrink-0">
         {primaryImage && (
           <img
             src={primaryImage.url}
             alt={primaryImage.alt}
             loading="lazy"
-            style={{ aspectRatio: '1 / 1', width: '100%', objectFit: 'cover' }}
+            className="w-full aspect-square object-cover"
           />
         )}
-        <span>{product.name}</span>
       </a>
 
-      {product.brand && (
-        <div className="product-brand" style={{ color: '#666', fontSize: '0.875rem' }}>
-          {product.brand.name}
-        </div>
-      )}
+      <div className="flex-grow flex flex-col p-4">
+        <a href={`/products/${product.slug}`} aria-label={product.name} className="block">
+          <span className="font-semibold text-gray-900 line-clamp-2 hover:text-blue-600">{product.name}</span>
+        </a>
 
-      <div className="product-pricing">
-        <span
-          data-testid="product-price"
-          style={{ fontWeight: 'bold' }}
-        >
-          {displayPrice}
-        </span>
-        {displayCompare && (
-          <del style={{ marginLeft: '0.5rem', color: '#999' }}>{displayCompare}</del>
+        {product.brand && (
+          <div className="text-sm text-gray-600 mt-1">
+            {product.brand.name}
+          </div>
         )}
-      </div>
 
-      <div className="product-stock">
-        {isOutOfStock ? (
+        <div className="mt-3 flex items-baseline gap-2">
           <span
-            data-testid="out-of-stock-badge"
-            style={{ color: 'red', fontSize: '0.75rem' }}
+            data-testid="product-price"
+            className="font-bold text-lg text-gray-900"
           >
-            Out of Stock
+            {displayPrice}
           </span>
-        ) : (
-          <span style={{ color: 'green', fontSize: '0.75rem' }}>In Stock</span>
-        )}
-      </div>
+          {displayCompare && (
+            <del className="text-sm text-gray-500">{displayCompare}</del>
+          )}
+        </div>
 
-      <div className="product-actions" style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-        <button
-          type="button"
-          aria-label="Add to Cart"
-          disabled={isOutOfStock}
-          onClick={() => !isOutOfStock && onAddToCart(product._id, 1)}
-          style={{ cursor: isOutOfStock ? 'not-allowed' : 'pointer' }}
-        >
-          Add to Cart
-        </button>
+        <div className="mt-2">
+          {isOutOfStock ? (
+            <span
+              data-testid="out-of-stock-badge"
+              className="inline-block px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded"
+            >
+              Out of Stock
+            </span>
+          ) : (
+            <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">In Stock</span>
+          )}
+        </div>
 
-        <button
-          type="button"
-          aria-label="Add to Wishlist"
-          onClick={() => onWishlist(product._id)}
-        >
-          ♡ Wishlist
-        </button>
+        <div className="flex gap-2 mt-auto pt-4">
+          <button
+            type="button"
+            aria-label="Add to Cart"
+            disabled={isOutOfStock}
+            onClick={() => !isOutOfStock && onAddToCart(product._id, 1)}
+            className="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          >
+            Add to Cart
+          </button>
+
+          <button
+            type="button"
+            aria-label="Add to Wishlist"
+            onClick={() => onWishlist(product._id)}
+            className="flex-1 px-3 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded hover:border-gray-400 hover:bg-gray-50 transition-colors"
+          >
+            ♡ Wishlist
+          </button>
+        </div>
       </div>
     </article>
   );

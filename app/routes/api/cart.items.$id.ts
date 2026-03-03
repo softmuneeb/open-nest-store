@@ -23,7 +23,15 @@ function recalcTotals(items: Array<{ unit_price_aed: number; quantity: number }>
 
 export async function action({ request, params, context }: { request: Request; params: { id: string }; context: Record<string, unknown> }) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
+  let db;
+  try {
+    db = await getDb(env);
+  } catch {
+    return new Response(JSON.stringify({ error: 'Database unavailable' }), {
+      status: 503,
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   const sessionId = getSessionId(request);
   const method = request.method.toUpperCase();
   const itemId = params.id;

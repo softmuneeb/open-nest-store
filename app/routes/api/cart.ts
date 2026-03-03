@@ -32,7 +32,18 @@ function recalcTotals(items: Array<{ unit_price_aed: number; quantity: number }>
 
 export async function loader({ request, context }: { request: Request; context: Record<string, unknown> }) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
+
+  let db;
+  try {
+    db = await getDb(env);
+  } catch {
+    const empty = { session_id: getSessionId(request), items: [], totals: { subtotal: 0, discount: 0, shipping: 0, total: 0, item_count: 0 }, coupon: null };
+    return new Response(JSON.stringify(empty), {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+
   const sessionId = getSessionId(request);
   const cart = await fetchCart(db, sessionId);
 
@@ -44,7 +55,17 @@ export async function loader({ request, context }: { request: Request; context: 
 
 export async function action({ request, context }: { request: Request; context: Record<string, unknown> }) {
   const env = (context.cloudflare?.env ?? context.env) as { MONGODB_URI: string; MONGODB_DB?: string };
-  const db = await getDb(env);
+
+  let db;
+  try {
+    db = await getDb(env);
+  } catch {
+    return new Response(JSON.stringify({ error: 'Database unavailable' }), {
+      status: 503,
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+
   const sessionId = getSessionId(request);
   const method = request.method.toUpperCase();
 

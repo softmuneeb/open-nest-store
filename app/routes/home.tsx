@@ -326,7 +326,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                   {/* Info */}
                   <div className="p-3 flex flex-col flex-1">
                     {product.brand && (
-                      <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">{product.brand}</p>
+                      <p className="text-[10px] text-gray-600 font-semibold uppercase tracking-wide mb-0.5">{product.brand}</p>
                     )}
                     <h3 data-testid="product-name" className="font-medium text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors text-sm leading-snug flex-1">
                       {product.name}
@@ -336,14 +336,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                         AED {product.price.toFixed(2)}
                       </p>
                       {product.comparePrice && product.comparePrice > product.price && (
-                        <p className="text-gray-400 text-xs line-through">AED {product.comparePrice.toFixed(2)}</p>
+                        <p className="text-gray-500 text-xs line-through">AED {product.comparePrice.toFixed(2)}</p>
                       )}
                     </div>
                     <div className="mt-2 flex items-center justify-between">
                       {product.stock?.status === 'in_stock' ? (
                         <span className="text-green-600 text-[10px] font-medium">✓ In Stock</span>
                       ) : (
-                        <span className="text-gray-400 text-[10px]">Out of stock</span>
+                        <span className="text-gray-600 text-[10px]">Out of stock</span>
                       )}
                       <span className="text-[10px] text-blue-600 font-medium group-hover:underline">View details →</span>
                     </div>

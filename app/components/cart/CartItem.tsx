@@ -36,38 +36,36 @@ export function CartItem({ item, currency, rates, onQtyChange, onRemove }: CartI
   return (
     <div
       data-testid="cart-item"
-      style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', padding: '1rem 0', borderBottom: '1px solid #eee' }}
+      className="flex gap-4 items-start py-4 border-b border-gray-200 last:border-b-0"
     >
       {thumbnail && (
         <img
           src={thumbnail.url}
           alt={thumbnail.alt}
-          style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+          className="w-20 h-20 object-cover rounded flex-shrink-0"
         />
       )}
 
-      <div style={{ flex: 1 }}>
-        <div data-testid="cart-item-name" style={{ fontWeight: '600' }}>
+      <div className="flex-1">
+        <div data-testid="cart-item-name" className="font-semibold text-gray-900">
           {product.name}
         </div>
-        <div style={{ color: '#666', fontSize: '0.875rem' }}>{product.sku}</div>
+        <div className="text-sm text-gray-600 mt-1">SKU: {product.sku}</div>
 
-        <div style={{ marginTop: '0.5rem' }}>
-          <span data-testid="cart-item-price">
+        <div className="mt-3">
+          <span data-testid="cart-item-price" className="font-bold text-gray-900">
             {formatPrice(convertPrice(unit_price_aed, currency, rates), currency, rates)}
           </span>
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <div className="flex flex-col items-center gap-2">
+        <div className="flex items-center gap-1 border border-gray-300 rounded p-1">
           <button
             type="button"
             aria-label="Decrease quantity"
             disabled={qty <= 1}
-            onClick={() => {
-              if (qty > 1) onQtyChange(id, qty - 1);
-            }}
+            className="px-2 py-1 text-gray-700 hover:text-gray-900 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
             −
           </button>
@@ -77,19 +75,20 @@ export function CartItem({ item, currency, rates, onQtyChange, onRemove }: CartI
             type="number"
             value={qty}
             readOnly
-            style={{ width: '3rem', textAlign: 'center' }}
+            className="w-12 text-center text-gray-900 border-0"
           />
 
           <button
             type="button"
             aria-label="Increase quantity"
+            className="px-2 py-1 text-gray-700 hover:text-gray-900"
             onClick={() => onQtyChange(id, qty + 1)}
           >
             +
           </button>
         </div>
 
-        <span data-testid="cart-item-line-total" style={{ fontWeight: '700' }}>
+        <span data-testid="cart-item-line-total" className="font-bold text-gray-900">
           {lineTotal}
         </span>
       </div>
@@ -97,8 +96,8 @@ export function CartItem({ item, currency, rates, onQtyChange, onRemove }: CartI
       <button
         type="button"
         aria-label="Remove item"
+        className="ml-4 text-red-600 hover:text-red-800 font-medium text-sm bg-none border-none cursor-pointer"
         onClick={() => onRemove(id)}
-        style={{ color: 'red', cursor: 'pointer', background: 'none', border: 'none' }}
       >
         ✕ Remove
       </button>
