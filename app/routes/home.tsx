@@ -237,7 +237,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                   <h3 data-testid="category-name" className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors text-sm">
                     {cat.name}
                   </h3>
-                  <span className="text-gray-400 group-hover:text-blue-600 transition-colors text-sm">→</span>
+                  <span className="text-gray-500 group-hover:text-blue-600 transition-colors text-sm">→</span>
                 </div>
               </a>
             ))}

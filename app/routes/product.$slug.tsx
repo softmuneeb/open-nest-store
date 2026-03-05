@@ -87,7 +87,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
         <ul className="flex items-center space-x-2">
           {(breadcrumb as Array<{ name: string; url: string }>).map((item, idx) => (
             <li key={item.url} className="flex items-center space-x-2">
-              {idx > 0 && <span className="text-gray-400">/</span>}
+              {idx > 0 && <span className="text-gray-500">/</span>}
               <a href={item.url} className={idx === breadcrumb.length - 1 ? 'text-gray-900' : 'text-blue-600 hover:underline'}>
                 {item.name}
               </a>

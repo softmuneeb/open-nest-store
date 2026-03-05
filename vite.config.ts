@@ -7,6 +7,12 @@ import { resolve } from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import path from "path";
+import { EventEmitter } from "events";
+
+// Atlas replica sets create 3+ topology monitors that each register timeout
+// listeners, easily hitting Node's default limit of 10. Raise it once here
+// so dev-server logs stay clean without disabling the check entirely.
+EventEmitter.defaultMaxListeners = 25;
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 

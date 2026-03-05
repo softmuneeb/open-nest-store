@@ -1,4 +1,10 @@
 import { MongoClient, type Db } from 'mongodb';
+import EventEmitter from 'node:events';
+
+// Atlas replica-set topology creates multiple internal monitors that each
+// register timeout listeners. Raise the default so Node doesn't emit a
+// false-positive "memory leak" warning in dev.
+EventEmitter.defaultMaxListeners = 25;
 
 interface Env {
   MONGODB_URI: string;
@@ -26,6 +32,11 @@ function createClient(uri: string): Promise<MongoClient> {
     // drop connections while in dev.
     maxIdleTimeMS: 60_000,
   });
+
+  // Atlas replica sets create multiple internal topology monitors, each
+  // registering timeout listeners. Raise the limit to prevent Node.js
+  // emitting a false-positive "memory leak" warning.
+  client.setMaxListeners(25);
 
   const promise = client
     .connect()

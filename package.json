@@ -17,7 +17,6 @@
 		"bcryptjs": "^2.4.3",
 		"isbot": "5.1.32",
 		"jose": "^5.9.6",
-		"mongodb": "^6.10.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-router": "7.9.6"
@@ -38,8 +37,10 @@
 		"@types/react-dom": "^19.0.0",
 		"@vitest/coverage-v8": "^2.1.0",
 		"happy-dom": "^15.7.0",
+		"mongodb": "^7.1.0",
 		"mongodb-memory-server": "^10.1.0",
 		"tailwindcss": "4.1.17",
+		"tsx": "^4.21.0",
 		"typescript": "5.9.3",
 		"vite": "^6.0.0",
 		"vite-tsconfig-paths": "5.1.4",

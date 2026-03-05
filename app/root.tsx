@@ -89,7 +89,7 @@ function Header() {
 		<header className="bg-white shadow sticky top-0 z-50">
 			<div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-8">
 				<a href="/" data-testid="site-logo" className="font-bold text-2xl text-blue-900 shrink-0">
-					[[ Open Nest ]]
+					Open Nest
 				</a>
 				<form onSubmit={handleSearchSubmit} className="flex-1 max-w-md hidden md:block">
 					<input
@@ -98,7 +98,7 @@ function Header() {
 						placeholder="Search products..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+						className="w-full border rounded-lg px-4 py-2 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
 					/>
 				</form>
 				<nav className="hidden md:flex items-center gap-6 text-sm">
@@ -111,8 +111,8 @@ function Header() {
 						<option value="USD">USD</option>
 						<option value="EUR">EUR</option>
 					</select>
-					<a href="/login" data-testid="header-login-link" className="hover:text-blue-600">Account</a>
-					<a href="/cart" data-testid="cart-icon" className="hover:text-blue-600 relative flex items-center gap-1">
+					<a href="/login" data-testid="header-login-link" className="text-gray-900 hover:text-blue-600 transition-colors">Account</a>
+					<a href="/cart" data-testid="cart-icon" className="text-gray-900 hover:text-blue-600 transition-colors relative flex items-center gap-1">
 						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 8h14M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
 						</svg>
@@ -141,12 +141,12 @@ function Header() {
 							placeholder="Search products..."
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
-							className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+							className="w-full border rounded-lg px-4 py-2 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
 						/>
 					</form>
 					<nav className="flex flex-col gap-3 text-sm">
-						<a href="/login" className="hover:text-blue-600">Account</a>
-						<a href="/cart" className="hover:text-blue-600">Cart ({cartCount})</a>
+						<a href="/login" className="text-gray-900 hover:text-blue-600 transition-colors">Account</a>
+						<a href="/cart" className="text-gray-900 hover:text-blue-600 transition-colors">Cart ({cartCount})</a>
 					</nav>
 				</div>
 			)}

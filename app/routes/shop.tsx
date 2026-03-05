@@ -156,7 +156,7 @@ export default function ShopPage({ loaderData }: Route.ComponentProps) {
               aria-label="Sort products"
               value={sort}
               onChange={(e) => { if (typeof window !== 'undefined') window.location.href = buildUrl({ sort: e.target.value, page: 1 }); }}
-              className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
@@ -240,7 +240,7 @@ export default function ShopPage({ loaderData }: Route.ComponentProps) {
                 {/* Info */}
                 <div className="p-3">
                   {product.brand && (
-                    <p className="text-xs text-gray-400 mb-0.5 font-medium uppercase tracking-wide">{product.brand}</p>
+                    <p className="text-xs text-gray-600 mb-0.5 font-medium uppercase tracking-wide">{product.brand}</p>
                   )}
                   <h3
                     data-testid="product-name"
@@ -253,7 +253,7 @@ export default function ShopPage({ loaderData }: Route.ComponentProps) {
                       AED {product.price.toFixed(2)}
                     </p>
                     {product.comparePrice && product.comparePrice > product.price && (
-                      <p className="text-gray-400 text-xs line-through">
+                      <p className="text-gray-500 text-xs line-through">
                         AED {product.comparePrice.toFixed(2)}
                       </p>
                     )}

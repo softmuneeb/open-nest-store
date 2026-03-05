@@ -6,6 +6,7 @@ export default [
   route("/search", "routes/search.tsx"),
   route("/category/:slug", "routes/category.$slug.tsx"),
   route("/product/:slug", "routes/product.$slug.tsx"),
+  route("/products/:slug", "routes/products.$slug.tsx"),
   route("/cart", "routes/cart.tsx"),
 
   // ── Checkout ──────────────────────────────────────────────────────────────
