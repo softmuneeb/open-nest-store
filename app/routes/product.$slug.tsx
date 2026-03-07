@@ -125,7 +125,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
             <h1 data-testid="product-title" className="text-3xl font-bold mb-2">
               {product.name}
             </h1>
-            <p className="text-gray-600 mb-4">{product.brand}</p>
+            {product.brand && <p className="text-gray-600 mb-4">{product.brand.name}</p>}
             <p className="text-sm text-gray-600 mb-4">SKU: {product.sku}</p>
 
             {/* Price */}
